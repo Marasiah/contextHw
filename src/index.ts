@@ -1,4 +1,6 @@
 import  { calculateAveragePrice, calculateTotalPrice, filterItems } from "./ruleEngine";
+import { itemInfo } from "./types/itemInfo";
+import { rule } from "./types/rulesObject";
 const items: itemInfo[] = [
     { name: 'Item A', attributes: { color: 'BLUE', price: 15, quantity: 800 }, price: 15.99 },
     { name: 'Item B', attributes: { color: 'RED', price: 20, quantity: 500 }, price: 20.50 },

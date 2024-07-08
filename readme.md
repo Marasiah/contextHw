@@ -11,17 +11,23 @@ Filter the potential products to just those that pass a given threshold (assume 
 Calculate the total and average prices for all the products that score sufficiently highly.
 
 
-3 Objects and 1 engine to calculate the it
+2 Objects and 1 engine to calculate the it
 
 2 Objects:
 - ItemInfo (made up of customer reqs as listed above) 
 - Rules (this will contain the rule and the product name so it can be indexed together )
-- Output (this will contain a map taht contains the items that pass the rules and  )
 
-There will be a rules engine that will perform the required calculations on a map of items called Inventory, where the key of the map will be the name of the item.
 
 Assumptions:
 - The vendor provides his data in a json array or it is json-ified before processing
 - The names don't change and are consistent between the company  and the vendor (otherwise there issues with searching that can be mitigated but at least initially they must match)
 - The rules always terminate their last clause with 🡪 . (ie there can be any number of clauses before that but none after)
 - Even if there are no values (ie color) there must be a value  (empty string is ok)
+
+To run: 
+Afer downloading the repo, run  
+```npm install ```
+
+to install and then run 
+``` npx ts-node src/index.ts```
+ 

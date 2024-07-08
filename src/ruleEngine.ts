@@ -3,13 +3,14 @@
 /*Score all of the salesman’s items on how well they match their item definitions by calculating the sum of the rule scores, which is the percentage of conditions which match, multiplied by the score.
 Filter the potential items to just those that pass a given threshold (assume 50% as the cutoff).
 Calculate the total and average prices for all the items that score sufficiently highly.*/
-import "./types/itemInfoObject.js"
-import "./types/rulesObject.js"
+//import "./types/itemInfo.js"
+import { itemInfo } from "./types/itemInfo";
+import {rule, ruleCondition} from "./types/rulesObject"
 
 
 
 
-export function matchCondition(attributeValue: any, condition: RuleCondition): boolean {
+export function matchCondition(attributeValue: any, condition: ruleCondition): boolean {
     switch (condition.operator) {
         case '==':
             return attributeValue === condition.value;
@@ -28,7 +29,7 @@ export function matchCondition(attributeValue: any, condition: RuleCondition): b
     }
 }
 
-export function calculateItemScore(item: itemInfo, rules: Rule[]): number {
+export function calculateItemScore(item: itemInfo, rules: rule[]): number {
     let totalScore = 0;
     for (const rule of rules) {
         let ruleMatchCount = 0;
@@ -46,7 +47,7 @@ export function calculateItemScore(item: itemInfo, rules: Rule[]): number {
 }
 
 
-export function filterItems(items: itemInfo[], rules: Rule[], threshold: number): itemInfo[] {
+export function filterItems(items: itemInfo[], rules: rule[], threshold: number): itemInfo[] {
     return items.filter(product => {
         const score = calculateItemScore(product, rules);
         const passThreshold = score >= threshold;
