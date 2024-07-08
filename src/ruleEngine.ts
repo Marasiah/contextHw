@@ -1,67 +1,65 @@
 
 //Each condition is made up of an attribute name, a value, and a comparison operator.
-/*Score all of the salesman’s products on how well they match their product definitions by calculating the sum of the rule scores, which is the percentage of conditions which match, multiplied by the score.
-Filter the potential products to just those that pass a given threshold (assume 50% as the cutoff).
-Calculate the total and average prices for all the products that score sufficiently highly.*/
+/*Score all of the salesman’s items on how well they match their item definitions by calculating the sum of the rule scores, which is the percentage of conditions which match, multiplied by the score.
+Filter the potential items to just those that pass a given threshold (assume 50% as the cutoff).
+Calculate the total and average prices for all the items that score sufficiently highly.*/
 import "./types/itemInfoObject.js"
-import fs from 'fs'
-import itemData from "./types/itemInfo.json";
-import ruleArray from "./types/rules.json";
+import "./types/rulesObject.js"
 
-const myRuleMap = new Map<string, string>();
 
-function updateRuleMap() {
 
-};
 
-function calculateScoreAgainstRule()) {// this returns as a number but it is understood as a percent
-    //alculating the sum of the rule scores, which is the percentage of conditions which match, multiplied by the score.
-    itemData.forEach(element => {
-        if (myRuleMap.has(element.name)) {
-            //calculate score agains rule 
+export function matchCondition(attributeValue: any, condition: RuleCondition): boolean {
+    switch (condition.operator) {
+        case '==':
+            return attributeValue === condition.value;
+        case '!=':
+            return attributeValue !== condition.value;
+        case '<':
+            return attributeValue < condition.value;
+        case '>':
+            return attributeValue > condition.value;
+        case '<=':
+            return attributeValue <= condition.value;
+        case '>=':
+            return attributeValue >= condition.value;
+        default:
+            return false;
+    }
+}
+
+export function calculateItemScore(item: itemInfo, rules: Rule[]): number {
+    let totalScore = 0;
+    for (const rule of rules) {
+        let ruleMatchCount = 0;
+        for (const condition of rule.conditions) {
+            const attributeValue = item.attributes[condition.attribute];
+            if (attributeValue !== undefined && matchCondition(attributeValue, condition)) {
+                ruleMatchCount++;
+            }
         }
+        const ruleMatchPercentage = ruleMatchCount / rule.conditions.length;
+        const ruleScore = ruleMatchPercentage * rule.score;
+        totalScore += rule.negative ? -ruleScore : ruleScore;
+    }
+    return totalScore;
+}
 
+
+export function filterItems(items: itemInfo[], rules: Rule[], threshold: number): itemInfo[] {
+    return items.filter(product => {
+        const score = calculateItemScore(product, rules);
+        const passThreshold = score >= threshold;
+        return passThreshold;
     });
 }
 
-function parseRule(itemData[element], ruleArray[element]) {
-    let ruleString = ruleArray[element].rule;
-    let fields = ruleString.split('&&');
-    let numberOfRules = 0; //how  many clauses match
-    switch operator {
-        case "==":
-            {
-
-                break;
-            };
-        case ">":
-            {
-
-                break;
-            };
-        case ">=":
-            {
-                break;
-            };
-        case "<":
-            {
-
-                break;
-            }
-        case "<=":
-            {
-                break;
-
-            };
-        default:
-            {
-
-                break;
-            }
-
-    }
-
+export function calculateTotalPrice(items: itemInfo[]): number {
+    return items.reduce((total, product) => total + product.price, 0);
 }
 
-
+export function calculateAveragePrice(items: itemInfo[]): number {
+    const total = calculateTotalPrice(items);
+    return total / items.length;
+}
 
