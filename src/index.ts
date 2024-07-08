@@ -5,7 +5,7 @@ const items: itemInfo[] = [
 
 ];
 
-const rules: Rule[] = [
+const rules: rule[] = [
     {
         conditions: [
             { attribute: 'color', value: 'BLUE', operator: '==' },
